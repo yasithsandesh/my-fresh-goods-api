@@ -13,7 +13,8 @@ public class CorsListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         //SET CORS CONFIGURATIONS GLOBALLY WHEN APPLICATION STATS
         Bcors corsContext = Bcors.getInstance();
-        corsContext.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:4200"));
+//        corsContext.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+   corsContext.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:4200"));
         corsContext.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS"));
         System.out.println("CorsListener Activated.");
     }

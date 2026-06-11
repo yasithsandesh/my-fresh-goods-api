@@ -37,7 +37,7 @@ public class CorsFilter implements Filter {
         }
         
         chain.doFilter(request, response);
-        System.out.println("CorsFilter Added To: " + Bcors.getInstance().getAllowedOrigins());
+        
     }
 
     @Override

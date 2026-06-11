@@ -22,56 +22,52 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import util.HibernateUtil;
+
 /**
  *
  * @author yasithsandesh
  */
-@WebServlet(name = "GetSingleItem", urlPatterns = {"/GetSingleItem"})
-public class GetSingleItem extends HttpServlet {
+@WebServlet(name = "SingleItem", urlPatterns = {"/SingleItem"})
+public class SingleItem extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int pid = Integer.parseInt(request.getParameter("pid"));
-        ResponseDTO responseDTO = new ResponseDTO();
-        Gson gson = new Gson();
+        String pid = request.getParameter("pid");
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
 
-            Session session = HibernateUtil.getSessionFactory().openSession();
+            Item item = (Item) session.get(Item.class, Integer.valueOf(pid));
+            item.getGarden().setOwner(null);
+            ItemStatus itemStatus = (ItemStatus) session.get(ItemStatus.class, 3);
 
-            Item singleItem = (Item) session.get(Item.class, pid);
-            singleItem.getGarden().setOwner(null);
-            ItemStatus itemStatus =(ItemStatus) session.get(ItemStatus.class, 3);
+            Category category = item.getCategory();
 
-            Category category = singleItem.getCategory();
-            
             Criteria criteria = session.createCriteria(Item.class);
             criteria.add(Restrictions.eq("category", category));
             criteria.add(Restrictions.eq("itemStatus", itemStatus));
-            criteria.add(Restrictions.ne("id", singleItem.getId()));
+            criteria.add(Restrictions.ne("id", item.getId()));
+
             criteria.setMaxResults(5);
-            
+
             List<Item> items = criteria.list();
-            
-            for(Item item : items){
-            
-                item.getGarden().setOwner(null);
-            
+
+            for (Item itemis : items) {
+
+                itemis.getGarden().setOwner(null);
+
             }
-            
+            Gson gson = new Gson();
             SingleItemResponseDTO singleItemResponseDTO = new SingleItemResponseDTO();
-            singleItemResponseDTO.setSingleItem(singleItem);
-            singleItemResponseDTO.setSimilarItems(items);
-            
+            singleItemResponseDTO.setSimilarItemsList(items);
+            singleItemResponseDTO.setItem(item);
             response.setContentType("application/json");
             response.getWriter().write(gson.toJson(singleItemResponseDTO));
 
         } catch (Exception e) {
 
             e.printStackTrace();
-            responseDTO.setMessage("server error");
-            responseDTO.setCode(500);
-            response.setContentType("application/json");
-            response.getWriter().write(gson.toJson(responseDTO));
+
         }
 
     }

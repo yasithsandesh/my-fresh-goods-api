@@ -18,6 +18,7 @@ public class ProductSearchDTO implements Serializable{
     private double priceRangeEnd;
     private String sortText;
     private int first;
+    private String text;
 
     public ProductSearchDTO() {
     }
@@ -69,7 +70,15 @@ public class ProductSearchDTO implements Serializable{
     public void setFirst(int first) {
         this.first = first;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
     
-    
+       
     
 }

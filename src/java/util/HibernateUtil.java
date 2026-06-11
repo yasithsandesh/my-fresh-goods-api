@@ -12,8 +12,9 @@ import org.hibernate.cfg.Configuration;
  * @author yasithsandesh
  */
 public class HibernateUtil {
-      private static final SessionFactory sessionFactory;
-    
+
+    private static final SessionFactory sessionFactory;
+
     static {
         try {
             sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -22,12 +23,12 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
-    
-    public static SessionFactory getSessionFactory(){
+
+    public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
-    
-    public static void shutdown(){
+
+    public static void shutdown() {
         getSessionFactory().close();
     }
 }

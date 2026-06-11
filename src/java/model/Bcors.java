@@ -19,7 +19,7 @@ public class Bcors {
     private int maxAge = 3600; // 1 hour max age for preflight response
 
     //DEFAULT CONFIGURATIONS
-    private static final List<String> defaultOrigins = Arrays.asList("http://localhost:3000","http://localhost:4200");
+    private static final List<String> defaultOrigins = Arrays.asList("http://localhost:3000");
     private static final List<String> defaultMethods = Arrays.asList("POST", "GET", "OPTIONS");
 
     private Bcors(List<String> allowedOrigins, List<String> allowedMethods) {

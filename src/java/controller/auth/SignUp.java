@@ -41,27 +41,27 @@ public class SignUp extends HttpServlet {
 
         if (userDTO.getFirstName().isEmpty()) {
             responseDTO.setMessage("Please enter your First Name");
-      
+
             responseDTO.setStatus(false);
         } else if (userDTO.getLastName().isEmpty()) {
             responseDTO.setMessage("Please enter your Last Name");
-   
+
             responseDTO.setStatus(false);
         } else if (userDTO.getEmail().isEmpty()) {
             responseDTO.setMessage("Please enter your Email");
-      
+
             responseDTO.setStatus(false);
         } else if (!Validations.isEmailValid(userDTO.getEmail())) {
             responseDTO.setMessage("Please enter your valid Email");
-    
+
             responseDTO.setStatus(false);
         } else if (userDTO.getPassword().isEmpty()) {
             responseDTO.setMessage("Please enter your Password");
- 
+
             responseDTO.setStatus(false);
         } else if (false) {
             responseDTO.setMessage("Password length low");
- 
+
             responseDTO.setStatus(false);
         } else {
 
@@ -95,12 +95,13 @@ public class SignUp extends HttpServlet {
                 request.getSession().setAttribute("type", "user");
                 responseDTO.setMessage("sucess");
                 responseDTO.setStatus(true);
-                response.setContentType("application/json");
-                response.getWriter().write(gson.toJson(responseDTO));
 
             }
 
         }
+
+        response.setContentType("application/json");
+        response.getWriter().write(gson.toJson(responseDTO));
 
     }
 

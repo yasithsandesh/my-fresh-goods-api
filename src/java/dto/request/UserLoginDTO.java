@@ -11,6 +11,7 @@ package dto.request;
 public class UserLoginDTO {
     private String email;
     private String password;
+    private String type;
 
     public UserLoginDTO() {
     }
@@ -35,6 +36,15 @@ public class UserLoginDTO {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+    
     
     
 }

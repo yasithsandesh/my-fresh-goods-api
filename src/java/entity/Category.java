@@ -24,9 +24,6 @@ public class Category implements Serializable {
     @Column(name = "name", length = 45, nullable = false)
     String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<Item> itemList;
-
     public Category() {
     }
 
@@ -46,12 +43,6 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public List<Item> getItemList() {
-        return itemList;
-    }
 
-    public void setItemList(List<Item> itemList) {
-        this.itemList = itemList;
-    }
 
 }

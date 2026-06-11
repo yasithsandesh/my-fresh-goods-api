@@ -14,28 +14,30 @@ import java.util.List;
  */
 public class SingleItemResponseDTO implements Serializable{
     
-    private Item singleItem;
+    private Item Item;
     
-    private List<Item> similarItems;
+    private List<Item> similarItemsList;
 
     public SingleItemResponseDTO() {
     }
 
-    public Item getSingleItem() {
-        return singleItem;
+    public Item getItem() {
+        return Item;
     }
 
-    public void setSingleItem(Item singleItem) {
-        this.singleItem = singleItem;
+    public void setItem(Item Item) {
+        this.Item = Item;
     }
 
-    public List<Item> getSimilarItems() {
-        return similarItems;
+    public List<Item> getSimilarItemsList() {
+        return similarItemsList;
     }
 
-    public void setSimilarItems(List<Item> similarItems) {
-        this.similarItems = similarItems;
+    public void setSimilarItemsList(List<Item> similarItemsList) {
+        this.similarItemsList = similarItemsList;
     }
+
+
     
     
     

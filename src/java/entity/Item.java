@@ -44,7 +44,7 @@ public class Item implements Serializable {
     private String description;
 
     @Column(name = "fresh", nullable = false)
-    private long freshness;
+    private int freshness;
 
     @ManyToOne
     @JoinColumn(name = "graden_id")
@@ -137,11 +137,11 @@ public class Item implements Serializable {
         this.itemStatus = itemStatus;
     }
 
-    public long getFreshness() {
+    public int getFreshness() {
         return freshness;
     }
 
-    public void setFreshness(long freshness) {
+    public void setFreshness(int freshness) {
         this.freshness = freshness;
     }
 

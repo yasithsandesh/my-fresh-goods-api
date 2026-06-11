@@ -31,16 +31,11 @@ import util.HibernateUtil;
 @WebServlet(name = "SearchItems", urlPatterns = {"/SearchItems"})
 public class SearchItems extends HttpServlet {
 
-    private Gson gson;
-
-    @Override
-    public void init() throws ServletException {
-        this.gson = new Gson();
-    }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        Gson gson = new Gson();
+        ProductSearchResponse productSearchResponse = new ProductSearchResponse();
         try {
 
             ProductSearchDTO productSearchDTO = (ProductSearchDTO) gson.fromJson(request.getReader(), ProductSearchDTO.class);
@@ -81,13 +76,21 @@ public class SearchItems extends HttpServlet {
                 }
 
             }
+            
+            // add serach text
+            if(!productSearchDTO.getText().isEmpty()){
+            criteria1.add(Restrictions.like("title", "%" + productSearchDTO.getText() + "%"));
+            }
 
-            ////sort section start
-            double priceRangeStart = productSearchDTO.getPriceRangeStart();
-            double priceRangeEnd = productSearchDTO.getPriceRangeEnd();
+            if (productSearchDTO.getPriceRangeStart() > 0 || productSearchDTO.getPriceRangeEnd() > 0) {
 
-            criteria1.add(Restrictions.ge("price", priceRangeStart));
-            criteria1.add(Restrictions.le("price", priceRangeEnd));
+                ////sort section start
+                double priceRangeStart = productSearchDTO.getPriceRangeStart();
+                double priceRangeEnd = productSearchDTO.getPriceRangeEnd();
+
+                criteria1.add(Restrictions.ge("price", priceRangeStart));
+                criteria1.add(Restrictions.le("price", priceRangeEnd));
+            }
 
             String sortText = productSearchDTO.getSortText();
 
@@ -99,15 +102,16 @@ public class SearchItems extends HttpServlet {
                 criteria1.addOrder(Order.asc("title"));
             } else if (sortText.equals("Sort by Price")) {
                 criteria1.addOrder(Order.asc("price"));
+            } else {
+                criteria1.addOrder(Order.desc("id"));
             }
 
             ////sort section end
-            ProductSearchResponse productSearchResponse = new ProductSearchResponse();
             productSearchResponse.setAllItemCount(criteria1.list().size());
 
             //set item range
-            criteria1.setFirstResult(0);
-            criteria1.setMaxResults(6);
+            criteria1.setFirstResult(productSearchDTO.getFirst());
+            criteria1.setMaxResults(5);
 
             // get item list
             List<Item> itemList = criteria1.list();
@@ -120,17 +124,19 @@ public class SearchItems extends HttpServlet {
 
             productSearchResponse.setItems(itemList);
 
-            response.setContentType("application/json");
-            response.getWriter().print(gson.toJson(productSearchResponse));
-
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        response.setContentType("application/json");
+        response.getWriter().print(gson.toJson(productSearchResponse));
 
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        Gson gson = new Gson();
         try {
 
             String text = request.getParameter("text");
@@ -146,22 +152,6 @@ public class SearchItems extends HttpServlet {
                 response.getWriter().print(gson.toJson(itemList));
 
             } else {
-
-                Criteria criteria = session.createCriteria(Category.class);
-                List<Category> categoryList = criteria.list();
-
-                for (Category category : categoryList) {
-
-                    for (Item item : category.getItemList()) {
-
-                        item.setGarden(null);
-
-                    }
-
-                }
-
-                response.setContentType("application/json");
-                response.getWriter().print(gson.toJson(categoryList));
 
             }
 

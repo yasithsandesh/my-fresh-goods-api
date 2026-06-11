@@ -13,7 +13,7 @@ import java.util.Locale;
 public class GenerateKey {
 
     public static String genetate(String firstName, String lastName) {
-        String name = firstName + lastName;
+        String name = firstName + lastName; 
         String namekey = name.substring(2, 5);
         String upperCase = name.substring(0, 2).toUpperCase(Locale.ITALY);
 

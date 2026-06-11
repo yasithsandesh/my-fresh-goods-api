@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -61,8 +62,7 @@ public class Verification extends HttpServlet {
                         request.getSession().removeAttribute("email");
                         responseDTO.setMessage("Verification Success");
                         responseDTO.setStatus(true);
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(responseDTO));
+
 
                     } else {
 
@@ -84,11 +84,11 @@ public class Verification extends HttpServlet {
 
                         request.getSession().removeAttribute("email");
                         request.getSession().removeAttribute("type");
-                        
+
                         responseDTO.setStatus(true);
                         responseDTO.setMessage("Verification Success");
                         responseDTO.setCode(200);
-        
+
                     } else {
 
                     }
@@ -100,6 +100,25 @@ public class Verification extends HttpServlet {
 
         } else {
             responseDTO.setMessage("Verification unavailable! Please Login");
+        }
+
+        response.setContentType("application/json");
+        response.getWriter().write(gson.toJson(responseDTO));
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Gson gson = new Gson();
+        ResponseDTO responseDTO = new ResponseDTO();
+        HttpSession httpSession = request.getSession();
+        if (httpSession.getAttribute("user") != null) {
+
+            responseDTO.setMessage("Login User");
+            responseDTO.setStatus(true);
+
+        } else {
+            responseDTO.setMessage("Normal User");
+
         }
 
         response.setContentType("application/json");

@@ -86,7 +86,7 @@ public class ItemAdd extends HttpServlet {
                         item.setMeasuringType(MeasuringType.valueOf(measuringType));
                         item.setPrice(Double.valueOf(price));
                         item.setDescription(description);
-                        item.setFreshness(Long.valueOf(fresh));
+                        item.setFreshness(Integer.valueOf(fresh));
                         item.setGarden(garden);
                         item.setCategory(category);
                         item.setQty(Integer.valueOf(qty));
@@ -98,7 +98,9 @@ public class ItemAdd extends HttpServlet {
                         //Product Image Upload
                         String applicationPath = request.getServletContext().getRealPath("");
 
-                        File folder = new File(applicationPath + "//" + itemId);
+                        String newApplicationPath = applicationPath.replace("build/web", "web");
+
+                        File folder = new File(newApplicationPath + "//product-images//" + itemId);
 
                         folder.mkdir();
 

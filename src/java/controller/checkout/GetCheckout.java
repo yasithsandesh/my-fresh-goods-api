@@ -49,6 +49,8 @@ public class GetCheckout extends HttpServlet {
 
                 // login user
                 UserDTO userDTO = (UserDTO) httpSession.getAttribute("user");
+                
+                System.out.println(userDTO.getEmail());
 
                 //DB user
                 Criteria criteria1 = session.createCriteria(User.class);
@@ -62,32 +64,32 @@ public class GetCheckout extends HttpServlet {
                 criteria2.setMaxResults(1);
                 Address address = (Address) criteria2.list().get(0);
                 address.setUser(null);
-                
+
                 //DB city list
                 Criteria criteria3 = session.createCriteria(City.class);
-                List<City> citys =  criteria3.list();
-                
+                List<City> citys = criteria3.list();
+
                 //user cart items from DB
                 Criteria criteria4 = session.createCriteria(Cart.class);
                 criteria4.add(Restrictions.eq("user", user));
                 List<Cart> cartList = criteria4.list();
-                
-                for(Cart cart : cartList){
-                
+
+                for (Cart cart : cartList) {
+
                     cart.setUser(null);
                     cart.getItem().getGarden().setOwner(null);
-                
+
                 }
-                
+
                 GetCheckoutDTO getCheckoutDTO = new GetCheckoutDTO();
                 getCheckoutDTO.setAddress(address);
                 getCheckoutDTO.setCartList(cartList);
                 getCheckoutDTO.setCityList(citys);
-                
+
+                responseDTO.setStatus(true);
                 responseDTO.setMessage("success");
                 responseDTO.setData(getCheckoutDTO);
-                
-                
+
             } else {
 
                 responseDTO.setMessage("Not signed in");
@@ -95,9 +97,11 @@ public class GetCheckout extends HttpServlet {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             responseDTO.setMessage("server error");
         }
-
+        
+        response.setContentType("application/json");
         response.getWriter().write(gson.toJson(responseDTO));
     }
 

@@ -42,7 +42,8 @@ public class Mail {
             message.setFrom(new InternetAddress(Mail.APP_EMAIL));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject(subject);
-            message.setText(content);
+//            message.setText(content);
+              message.setContent(content, "text/html");
 
             Transport.send(message);
             System.out.println("Email sent successfully!");

@@ -121,6 +121,9 @@ public class GetAllCart extends HttpServlet {
 
         } catch (Exception e) {
         }
+        
+         response.setContentType("application/json");
+        response.getWriter().write(gson.toJson(cartItemList));
     }
 
 }

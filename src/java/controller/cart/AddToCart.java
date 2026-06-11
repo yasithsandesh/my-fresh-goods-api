@@ -80,6 +80,9 @@ public class AddToCart extends HttpServlet {
 
                             session.save(cart);
                             transaction.commit();
+                            
+                            responseDTO.setMessage("sucess");
+                            responseDTO.setStatus(true);
 
                         } else {
 
@@ -96,6 +99,8 @@ public class AddToCart extends HttpServlet {
                             cart.setQty(cart.getQty() + reqQty);
                             session.update(cart);
                             transaction.commit();
+                                responseDTO.setMessage("sucess");
+                            responseDTO.setStatus(true);
 
                         } else {
 
@@ -120,6 +125,8 @@ public class AddToCart extends HttpServlet {
                             sessionCartMap.put(item.getId(), cartDTO);
 
                             httpSession.setAttribute("sessionCart", sessionCartMap);
+                                responseDTO.setMessage("sucess");
+                            responseDTO.setStatus(true);
 
                         } else {
 
@@ -136,14 +143,16 @@ public class AddToCart extends HttpServlet {
                             //this item find session cart
 
                             CartDTO cartDTO = sessionCartMap.get(itemId);
-                            
-                            if(item.getQty()>=(cartDTO.getQty()+reqQty)){
-                                
+
+                            if (item.getQty() >= (cartDTO.getQty() + reqQty)) {
+
                                 cartDTO.setQty(reqQty);
-                            
-                            }else{
-                              responseDTO.setMessage("The requested qty is not available");
-                            
+                                    responseDTO.setMessage("sucess");
+                            responseDTO.setStatus(true);
+
+                            } else {
+                                responseDTO.setMessage("The requested qty is not available");
+
                             }
 
                         } else {
@@ -156,6 +165,8 @@ public class AddToCart extends HttpServlet {
                                 cartDTO.setItem(item);
 
                                 sessionCartMap.put(itemId, cartDTO);
+                                    responseDTO.setMessage("sucess");
+                            responseDTO.setStatus(true);
 
                             } else {
                                 responseDTO.setMessage("The requested qty is not available");
@@ -172,6 +183,9 @@ public class AddToCart extends HttpServlet {
             responseDTO.setMessage("Server error");
             responseDTO.setCode(500);
         }
+
+        response.setContentType("application/json");
+        response.getWriter().write(gson.toJson(responseDTO));
     }
 
 }
